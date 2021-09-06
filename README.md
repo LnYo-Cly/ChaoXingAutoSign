@@ -2,7 +2,7 @@
 超星学习通-自动签到（ChaoXingAutoSign）
 # 设置环境变量/常用的变量
 
-> settings--->Environments
+> settings--->secrets
 
 ## USERNAME
 学习通的账号
