@@ -32,6 +32,7 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           SENDKEY: ${{ secrets.SENDKEY }}
+          ADDRESS: ${{ secrets.ADDRESS }}
         run: |
           pip install lxml
           python ./AutoSign.py
