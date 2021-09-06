@@ -4,9 +4,13 @@ from lxml import etree
 import base64
 import re
 from itertools import combinations
+import time
+import os
 
 global currClass
 currClass=0
+
+
 def login(username,password):
     url='http://passport2.chaoxing.com/fanyalogin'
     headers={
@@ -62,7 +66,7 @@ def getclass():
     else:
             print("error:课程处理失败")
 
-def qiandao(url:str,address:str,enc:str):
+def qiandao(url:str,address:str,enc:str,sleepTime:int,sendKey:str):
    
     url='https://mobilelearn.chaoxing.com/widget/pcpick/stu/index?courseId={courseid}&jclassId={clazzid}'.format(courseid=re.findall(r"courseid=(.*?)&",url)[0],clazzid=re.findall(r"clazzid=(.*?)&",url)[0])
     #print(url)
@@ -79,6 +83,8 @@ def qiandao(url:str,address:str,enc:str):
     else:
         print('\n')
         print(course_dict[currClass][0]+"------检测到："+str(len(activeDetail))+"个活动。")
+        time.sleep(sleepTime)
+
         for activeID in activeDetail:
             global id
             id=re.findall(r'activeDetail\((.*?),',activeID)
@@ -90,25 +96,38 @@ def qiandao(url:str,address:str,enc:str):
             #print(url)
             print('**********')
             print(res.text)
+            if res.text=='success':
+                #server酱推送
+                requests.post('http://sc.ftqq.com/{SendKey}'.fomat(SendKey=sendKey), data={'text': "学习通签到通知", 'desp': course_dict[currClass][0]+"签到成功"})
+            else:
+                requests.post('http://sc.ftqq.com/{SendKey}'.fomat(SendKey=sendKey), data={'text': "学习通签到通知", 'desp': "签到失败。原因："+res.text})
+                
+            
         print('\n')
             
 
 
 
 if __name__=='__main__':
-    username=input('请输入账号：')
-    password=input('请输入密码：')
+    username=os.environ["USERNAME"]
+    password=os.environ["PASSWORD"]
     
-    address=input('请输入位置签到所需位置（没有请忽略）：')
-    enc=input('请输入二维码签到的ENC（没有请忽略）')
+    #server酱sendkey
+    sendKey=os.environ["SENDKEY"]
+    
+    #在下方可以更改签到地址和二维码的enc
+    address=os.environ["ADDRESS"]
+    #如果地址不是敏感信息，经常改动嫌麻烦可以不设置环境变量，address='你的地址'，即可
+    enc=''
+    
+    #监测到签到活动后，延迟多久进行签到，1s=1000ms,默认30s
+    sleepTime=30000
+    
     login(username,password)
     getclass()
 
     #print(course_dict)
     for currClass in course_dict:
         #print(course_dict[i][1])
-        qiandao(course_dict[currClass][1],address,enc)
+        qiandao(course_dict[currClass][1],address,enc,sleepTime,sendKey)
 
-    
-    #gen_password()
-    #print(course_dict)
