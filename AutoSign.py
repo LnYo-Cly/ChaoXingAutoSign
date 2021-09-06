@@ -96,6 +96,7 @@ def qiandao(url:str,address:str,enc:str,sleepTime:int,sendKey:str):
             #print(url)
             print('**********')
             print(res.text)
+            print('http://sc.ftqq.com/{SendKey}'.format(SendKey=sendKey))
             if res.text=='success':
                 #server酱推送
                 requests.post('http://sc.ftqq.com/{SendKey}'.format(SendKey=sendKey), data={'text': "学习通签到通知", 'desp': course_dict[currClass][0]+"签到成功"})
