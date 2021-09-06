@@ -98,9 +98,11 @@ def qiandao(url:str,address:str,enc:str,sleepTime:int,SENDKEY:str):
             print(res.text)
             if res.text=='success':
                 #server酱推送
-                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通签到通知", 'desp': course_dict[currClass][0]+"签到成功"})
+                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-签到成功", 'desp': course_dict[currClass][0]+"签到成功"})
+            elif res.text=='您已签到过了':
+                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-已签到过了", 'desp': course_dict[currClass][0]+"您已签到过了"})
             else:
-                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通签到通知", 'desp': "签到失败。原因："+res.text})
+                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-签到失败", 'desp': "签到失败。原因："+res.text})
                 
             
         print('\n')
