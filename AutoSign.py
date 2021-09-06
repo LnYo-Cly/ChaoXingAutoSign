@@ -120,9 +120,9 @@ if __name__=='__main__':
     #如果地址不是敏感信息，经常改动嫌麻烦可以不设置环境变量，address='你的地址'，即可
     enc=''
     
-    #监测到签到活动后，延迟多久进行签到，1s=1000ms,默认30s
+    #监测到签到活动后，延迟多久进行签到，1s=1000ms
     sleepTime=10
-    print(sendKey,username)
+
     login(username,password)
     getclass()
 
