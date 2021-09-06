@@ -66,7 +66,7 @@ def getclass():
     else:
             print("error:课程处理失败")
 
-def qiandao(url:str,address:str,enc:str,sleepTime:int,sendKey:str):
+def qiandao(url:str,address:str,enc:str,sleepTime:int,SENDKEY:str):
    
     url='https://mobilelearn.chaoxing.com/widget/pcpick/stu/index?courseId={courseid}&jclassId={clazzid}'.format(courseid=re.findall(r"courseid=(.*?)&",url)[0],clazzid=re.findall(r"clazzid=(.*?)&",url)[0])
     #print(url)
@@ -96,12 +96,11 @@ def qiandao(url:str,address:str,enc:str,sleepTime:int,sendKey:str):
             #print(url)
             print('**********')
             print(res.text)
-            print('http://sc.ftqq.com/{SendKey}'.format(SendKey=sendKey))
             if res.text=='success':
                 #server酱推送
-                requests.post('http://sc.ftqq.com/{SendKey}'.format(SendKey=sendKey), data={'text': "学习通签到通知", 'desp': course_dict[currClass][0]+"签到成功"})
+                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通签到通知", 'desp': course_dict[currClass][0]+"签到成功"})
             else:
-                requests.post('http://sc.ftqq.com/{SendKey}'.format(SendKey=sendKey), data={'text': "学习通签到通知", 'desp': "签到失败。原因："+res.text})
+                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通签到通知", 'desp': "签到失败。原因："+res.text})
                 
             
         print('\n')
@@ -114,7 +113,7 @@ if __name__=='__main__':
     password=os.environ["PASSWORD"]
     
     #server酱sendkey
-    sendKey=os.environ["SENDKEY"]
+    SENDKEY=os.environ["SENDKEY"]
     
     #在下方可以更改签到地址和二维码的enc
     address=os.environ["ADDRESS"]
@@ -130,5 +129,5 @@ if __name__=='__main__':
     #print(course_dict)
     for currClass in course_dict:
         #print(course_dict[i][1])
-        qiandao(course_dict[currClass][1],address,enc,sleepTime,sendKey)
+        qiandao(course_dict[currClass][1],address,enc,sleepTime,SENDKEY)
 
