@@ -26,8 +26,8 @@ sever酱微信推送的sendkey
 # 定时任务
 actions启用Workflows
 
-自己看个人需要进行修改
 /.github/workflows/main.yml中的cron部分，去除schedule和cron前面的井号#
+
 定时任务，每5分钟运行一次（UTC时间）
 ```
 - cron: '*/5 * * * *'
