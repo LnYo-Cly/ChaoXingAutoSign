@@ -66,7 +66,7 @@ def getclass():
     else:
             print("error:课程处理失败")
 
-def qiandao(url:str,address:str,enc:str,sleepTime:int,SENDKEY:str):
+def qiandao(url:str,address:str,sleepTime:int,SENDKEY:str):
    
     url='https://mobilelearn.chaoxing.com/widget/pcpick/stu/index?courseId={courseid}&jclassId={clazzid}'.format(courseid=re.findall(r"courseid=(.*?)&",url)[0],clazzid=re.findall(r"clazzid=(.*?)&",url)[0])
     #print(url)
@@ -124,7 +124,7 @@ if __name__=='__main__':
     #在下方可以更改签到地址和二维码的enc
     address=os.environ["ADDRESS"]
     #如果地址不是敏感信息，经常改动嫌麻烦可以不设置环境变量，address='你的地址'，即可
-    enc=''
+    #enc=''
     
     #监测到签到活动后，延迟多久进行签到，1s=1000ms
     sleepTime=10
@@ -135,5 +135,5 @@ if __name__=='__main__':
     #print(course_dict)
     for currClass in course_dict:
         #print(course_dict[i][1])
-        qiandao(course_dict[currClass][1],address,enc,sleepTime,SENDKEY)
+        qiandao(course_dict[currClass][1],address,sleepTime,SENDKEY)
 
