@@ -88,6 +88,7 @@ def qiandao(url:str,address:str,sleepTime:int,SENDKEY:str):
         for activeID in activeDetail:
             global id
             id=re.findall(r'activeDetail\((.*?),',activeID)
+            enc=''
             data=session.get('https://mobilelearn.chaoxing.com/v2/apis/sign/refreshQRCode?activeId={id}'.format(id=id[0])).json()['data']
 
             if data !=None:
