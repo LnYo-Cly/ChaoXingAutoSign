@@ -88,8 +88,10 @@ def qiandao(url:str,address:str,sleepTime:int,SENDKEY:str):
         for activeID in activeDetail:
             global id
             id=re.findall(r'activeDetail\((.*?),',activeID)
-            enc=session.get('https://mobilelearn.chaoxing.com/v2/apis/sign/refreshQRCode?activeId={id}'.format(id=id[0])).json()['data']['enc']
+            data=session.get('https://mobilelearn.chaoxing.com/v2/apis/sign/refreshQRCode?activeId={id}'.format(id=id[0])).json()['data']
 
+            if data !=None:
+                enc=data['enc']
             #print(enc)
             
             url='https://mobilelearn.chaoxing.com/pptSign/stuSignajax?activeId={id}&clientip=&latitude=-1&longitude=-1&appType=15&fid=0&enc={enc}&address={address}'.format(id=id[0],enc=enc,address=address)
