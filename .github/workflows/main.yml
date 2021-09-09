@@ -10,9 +10,9 @@ on:
   pull_request:
     branches: [ main ]
   
-  #schedule:
-  # 定时任务，每5分钟运行一次
-  #  - cron: '*/5 * * * *'
+  schedule:
+  # 定时任务，每1分钟运行一次
+    - cron: '*/1 * * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
