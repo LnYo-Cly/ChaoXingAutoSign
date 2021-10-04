@@ -36,6 +36,8 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           SENDKEY: ${{ secrets.SENDKEY }}
+          TGCHATID: ${{ secrets.TGCHATID }}
+          BOTTOKEN: ${{ secrets.BOTTOKEN }}
           ADDRESS: ${{ secrets.ADDRESS }}
         run: |
           pip install lxml
