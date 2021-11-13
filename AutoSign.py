@@ -105,18 +105,43 @@ def qiandao(url:str,address:str,sleepTime:int,SENDKEY:str):
             print(res.text)
             if '非签到活动' in res.text:
                 continue
-            if res.text=='success':
-                #server酱推送
-                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-签到成功", 'desp': course_dict[currClass][0]+"签到成功"})
-            elif res.text=='您已签到过了':
-                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-已签到过了", 'desp': course_dict[currClass][0]+"您已签到过了"})
-            else:
-                requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-签到失败", 'desp': "签到失败。原因："+res.text})
-                
-            
+            push(SENDKEY,res,TGCHATID,BOTTOKEN)
         print('\n')
             
+def push(SENDKEY,res,TGCHATID,BOTTOKEN):
+    if SENDKEY == '':
+        print("SENDKEY 为空，跳过 server 酱推送")
+    else:
+        if res.text=='success':
+            #server酱推送
+            rServerchan = requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-签到成功", 'desp': course_dict[currClass][0]+"签到成功"})
+        elif res.text=='您已签到过了':
+            rServerchan = requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-已签到过了", 'desp': course_dict[currClass][0]+"您已签到过了"})
+        else:
+            rServerchan = requests.post('https://sctapi.ftqq.com/{sendkey}.send'.format(sendkey=SENDKEY), data={'text': "学习通-签到失败", 'desp': "签到失败，原因："+res.text})
+        if rServerchan.status_code == 200:
+            print("Server酱推送成功")
+        elif rServerchan.status_code == 400:
+            print("Server酱推送失败，SENDKEY 填写有误")
+        else:
+            print("Server酱推送失败，未知错误")
 
+    if (TGCHATID == '' or BOTTOKEN == ''):
+        print("Telgram 推送参数配置有错，跳过 telegram 推送")
+    else:
+        if res.text=='success':
+            #Telegram 推送
+            rTelegram = requests.get('https://api.telegram.org/bot{BOTTOKEN}/sendMessage?chat_id={TGCHATID}&text={desp}'.format(BOTTOKEN=BOTTOKEN,TGCHATID=TGCHATID,desp=course_dict[currClass][0]+"签到成功"))
+        elif res.text=='您已签到过了':
+            rTelegram = requests.get('https://api.telegram.org/bot{BOTTOKEN}/sendMessage?chat_id={TGCHATID}&text={desp}'.format(BOTTOKEN=BOTTOKEN,TGCHATID=TGCHATID,desp=course_dict[currClass][0]+"您已签到过了"))
+        else:
+            rTelegram = requests.get('https://api.telegram.org/bot{BOTTOKEN}/sendMessage?chat_id={TGCHATID}&text={desp}'.format(BOTTOKEN=BOTTOKEN,TGCHATID=TGCHATID,desp="签到失败，原因："+res.text))
+        if rTelegram.status_code == 200 :
+            print('Telegram 推送成功')
+        elif rTelegram.status_code == 400 :
+            print('Telegram 推送失败，CHATID 填写有误')
+        else :
+            print('Telegram 推送失败，未知错误')
 
 
 if __name__=='__main__':
@@ -125,7 +150,11 @@ if __name__=='__main__':
     
     #server酱sendkey
     SENDKEY=os.environ["SENDKEY"]
-    
+
+    #Telegram推送参数
+    TGCHATID=os.environ["TGCHATID"]
+    BOTTOKEN=os.environ["BOTTOKEN"]
+
     #在下方可以更改签到地址和二维码的enc
     address=os.environ["ADDRESS"]
     #如果地址不是敏感信息，经常改动嫌麻烦可以不设置环境变量，address='你的地址'，即可
