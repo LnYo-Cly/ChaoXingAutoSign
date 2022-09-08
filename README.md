@@ -1,10 +1,3 @@
-# 微信小程序
-## 已解决大部分出现的问题，详细说明请看微信小程序
-![20211113134141](https://cdn.jsdelivr.net/gh/lnyo-cly/blogImg/pics/20211113134141.png)
-
-
-
-# ⚠二维码签到会提示无权获取，目前没找到解决办法，先手动二维码签到吧
 
 # ChaoXingAutoSign
 超星学习通-自动签到（ChaoXingAutoSign）
