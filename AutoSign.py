@@ -6,6 +6,7 @@ import re
 from itertools import combinations
 import time
 import os
+from login import Login
 
 global currClass
 currClass=0
@@ -17,11 +18,12 @@ def login(username,password):
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0',
         'Referer': r'http://passport2.chaoxing.com/login?fid=&newversion=true&refer=http%3A%2F%2Fi.chaoxing.com'
     }
-    
+    my_login = Login(username, password)
+    my_login.get_information()
     data={
         'fid':-1,
-        'uname':username,
-        'password':base64.b64encode(password.encode()).decode(),
+        'uname':my_login.username,
+        'password':my_login.password,
         'refer':r'http%253A%252F%252Fi.chaoxing.com',
         't':True,
         'forbidotherlogin':0
@@ -145,20 +147,18 @@ def push(SENDKEY,res,TGCHATID,BOTTOKEN):
 
 
 if __name__=='__main__':
-    username=os.environ["USERNAME"]
-    password=os.environ["PASSWORD"]
-    
-    #server酱sendkey
-    SENDKEY=os.environ["SENDKEY"]
+    username = os.environ["USERNAME"]
+    password = os.environ["PASSWORD"]
 
-    #Telegram推送参数
-    TGCHATID=os.environ["TGCHATID"]
-    BOTTOKEN=os.environ["BOTTOKEN"]
+    # server酱sendkey
+    SENDKEY = os.environ["SENDKEY"]
 
-    #在下方可以更改签到地址和二维码的enc
-    address=os.environ["ADDRESS"]
-    #如果地址不是敏感信息，经常改动嫌麻烦可以不设置环境变量，address='你的地址'，即可
-    #enc=''
+    # Telegram推送参数
+    TGCHATID = os.environ["TGCHATID"]
+    BOTTOKEN = os.environ["BOTTOKEN"]
+
+    # 在下方可以更改签到地址和二维码的enc
+    address = os.environ["ADDRESS"]
     
     #监测到签到活动后，延迟多久进行签到，1s=1000ms
     sleepTime=10
