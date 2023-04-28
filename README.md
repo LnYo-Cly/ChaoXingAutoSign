@@ -1,6 +1,6 @@
 
 # ChaoXingAutoSign
-超星学习通-自动签到（ChaoXingAutoSign）
+超星学习通-自动签到（ChaoXingAutoSign），原作者已经不更新，我修改了登录模块可以用了，但是目前手上没有课程给我签到，所以无法验证签到是否正常
 # 设置环境变量/常用的变量
 
 > settings--->secrets
